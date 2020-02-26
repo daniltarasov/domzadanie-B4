@@ -55,7 +55,7 @@ def find(user_id, session):
 
     athelete_bd_query = session.query(Athelete).all()
 
-    atl_dict_height = {atl.id: atl.height for atl in athelete_bd_query if atl.height}   #словарь для сравнения по весу, проверяем на наличие поля
+    atl_dict_height = {atl.id: atl.height for atl in athelete_bd_query if atl.height}   #словарь для сравнения по росту, проверяем на наличие поля
     atl_dict_bdate = {atl.id: date.fromisoformat(atl.birthdate) for atl in athelete_bd_query if atl.birthdate}  #словарь для сравнения по д.р., сразу переволим в datetime
 
     compared = user_found.height    #аргумент для сравнивающей функции
