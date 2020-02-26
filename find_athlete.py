@@ -28,6 +28,15 @@ class Athelete(Base):
     name = sa.Column(sa.Text)
     birthdate = sa.Column(sa.Text)
     height = sa.Column(sa.REAL)
+    age = sa.Column(sa.Integer)
+    gender = sa.Column(sa.Text)
+    weight = sa.Column(sa.Integer)
+    gold_medals = sa.Column(sa.Integer)
+    silver_medals = sa.Column(sa.Integer)
+    bronze_medals = sa.Column(sa.Integer)
+    total_medals = sa.Column(sa.Integer)
+    sport = sa.Column(sa.Text)
+    country = sa.Column(sa.Text)
 
 
 def connect_db():
@@ -46,15 +55,15 @@ def find(user_id, session):
 
     athelete_bd_query = session.query(Athelete).all()
 
-    atl_dict_height = {atl.id: atl.height for atl in athelete_bd_query if atl.height}
-    atl_dict_bdate = {atl.id: date.fromisoformat(atl.birthdate) for atl in athelete_bd_query if atl.birthdate}
+    atl_dict_height = {atl.id: atl.height for atl in athelete_bd_query if atl.height}   #словарь для сравнения по весу, проверяем на наличие поля
+    atl_dict_bdate = {atl.id: date.fromisoformat(atl.birthdate) for atl in athelete_bd_query if atl.birthdate}  #словарь для сравнения по д.р., сразу переволим в datetime
 
-    compared = user_found.height
-    id_height_found = find_atl(atl_dict_height, compared)
-    compared = date.fromisoformat(user_found.birthdate)
+    compared = user_found.height    #аргумент для сравнивающей функции
+    id_height_found = find_atl(atl_dict_height, compared)   #искомый id по весу
+    compared = date.fromisoformat(user_found.birthdate)     #то же самое по дате, в datetime
     id_bdate_found = find_atl(atl_dict_bdate, compared)
 
-    atl_height = session.query(Athelete).filter(Athelete.id == id_height_found).first()
+    atl_height = session.query(Athelete).filter(Athelete.id == id_height_found).first()     #получаем нужные объекты
     atl_bdate = session.query(Athelete).filter(Athelete.id == id_bdate_found).first()
 
     return user_found, atl_height, atl_bdate
